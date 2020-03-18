@@ -6,6 +6,9 @@ from lib.sms import check_vcode
 from user.models import User
 from user.forms import ProfileForm
 
+from user.logic import save_upload_file
+from user.logic import upload_avatar_to_qn
+
 
 def get_verify_code(request):
     '''短信发送'''
@@ -45,6 +48,9 @@ def modify_profile(request):
 
 
 def upload_avatar(request):
-    return render()
-
-
+    '''上传个人形象'''
+    avatar = request.FILES.get('avatar')
+    filepath, filename = save_upload_file(request.user, request.user, avatar)
+    # 上传个人头像到七牛云 「未测试」
+    # upload_avatar_to_qn(filepath, filename)
+    return render_json(None)

@@ -64,6 +64,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'tiger.wsgi.application'
 
 
+# 缓存配置
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+        }
+    }
+
+
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
@@ -112,3 +120,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = 'medias'

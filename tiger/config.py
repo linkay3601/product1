@@ -7,3 +7,10 @@ HY_SMS_PARAMS = {
     'mobile': None,
     'format': 'json'
 }
+
+
+# 七牛云配置
+QN_ACCESS_KEY = 'xxxxxxxxxxxxxx'
+QN_SECRET_KEY = 'xxxxxxxxxxxxxx'
+QN_BASE_URL = 'http://xxxxx.com'
+QN_BUCKET = 'tiger'
