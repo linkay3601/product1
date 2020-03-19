@@ -19,11 +19,18 @@ class AutoMiddleware(MiddlewareMixin):
         # 用户登录验证
         uid = request.session.get('uid')
         if uid is None:
-            return render_json(None, errors.LOGIN_REQUIRE)
+            raise errors.LoginRequire.code
         try:
             user = User.objects.get(id=uid)
         except User.DoesNotExist:
-            return render_json(None, errors.USER_NOT_EXIST)
+            raise errors.UserNotExist.code
         else:
             # 将 user 对象添加到 request
             request.user = user
+
+
+class LogicErrorMiddleware(MiddlewareMixin):
+    def process_exception(self, request, exception):
+        if isinstance(exception, errors.LogicError):
+            # 处理逻辑错误
+            return render_json(None, exception.code)

@@ -26,7 +26,7 @@ def login(request):
         request.session['uid'] = user.id
         return render_json(user.to_dict())
     else:
-        return render_json(None, errors.VCODE_ERROR)
+        raise errors.VcodeError.code
 
 
 def show_profile(request):
@@ -44,7 +44,7 @@ def modify_profile(request):
         profile.save()
         return render_json(profile.to_dict())
     else:
-        return render_json(form.errors, errors.PROFILE_ERROR)
+        raise errors.ProfileError.code
 
 
 def upload_avatar(request):
