@@ -2,6 +2,9 @@ import datetime
 
 from user.models import User
 
+from social.models import Swiped
+from social.models import Friend
+
 
 def rcmd_users(user):
     dating_sex = user.profile.dating_sex
@@ -17,3 +20,12 @@ def rcmd_users(user):
                                 birth_year__gte=min_year,
                                 birth_year__lte=max_year)
     return users
+
+
+def like_someone(user, sid):
+    Swiped.like(user.id, sid)
+    if Swiped.is_liked(sid, user.id):  # 检查对方是否喜欢过自己
+        Friend.make_friends(uid1=user.id, uid2=sid)
+        return True
+    else:
+        return False
