@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from lib.http import render_json
 from social import logic
-
+from social.models import Swiped
 
 
 def get_rcmd_users(request):
@@ -28,22 +28,25 @@ def like(request):
 def superlike(request):
     '''超级喜欢'''
     sid = int(request.POST.get('sid'))
-
-    return render_json(None) 
+    is_matched = logic.superlike_someone(request.user, sid)
+    return render_json({'is_matched': is_matched}) 
 
 
 def dislike(request):
     '''不喜欢'''
     sid = int(request.POST.get('sid'))
-
+    Swiped.dislike(request.user.id, sid)
     return render_json(None) 
 
 
 def rewind(request):
     '''反悔'''
+    logic.rewind(request.user)
     return render_json(None) 
 
 
 def show_liked_me(request):
     '''查看喜欢过我的人'''
-    return render_json(None) 
+    users = logic.users_liked_me(request.user)
+    result = [u.to_dict() for u in users]
+    return render_json(result) 

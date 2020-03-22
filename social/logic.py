@@ -29,3 +29,32 @@ def like_someone(user, sid):
         return True
     else:
         return False
+    return users
+
+
+def superlike_someone(user, sid):
+    Swiped.superlike(user.id, sid)
+    if Swiped.is_liked(sid, user.id):  # 检查对方是否喜欢过自己
+        Friend.make_friends(uid1=user.id, uid2=sid)
+        return True
+    else:
+        return False
+
+
+def rewind(user):
+    '''反悔'''
+    # 取出最后一次滑动记录
+    swiped = Swiped.objects.filter(uid=user.id).latest()
+
+    # 删除好友关系
+    if swiped.flag in ['superlike', 'like']:
+        Friend.break_off(user.id, swiped.sid)
+
+    # 删除滑动记录
+    swiped.delete()
+
+
+def users_liked_me(user):
+    swipeds = Swiped.like_me(user.id)
+    swiped_uid_list = [s.uid for s in swipeds]
+    return User.objects.filter(id__in=swiped_uid_list)

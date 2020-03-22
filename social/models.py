@@ -34,6 +34,14 @@ class Swiped(models.Model):
         return cls.objects.filter(uid=uid, sid=sid, 
                                   flag__in=['superlike', 'like']).exists()
 
+    @classmethod
+    def rewind(cls, uid):
+        cls.objects.filter(uid=uid).latest().delete()
+
+    @classmethod
+    def like_me(cls, uid):
+        return cls.objects.filter(sid=uid, flag__in=['superlike', 'like'])
+
 
 class Friend(models.Model):
     '''好友关系'''
@@ -44,3 +52,13 @@ class Friend(models.Model):
     def make_friends(cls, uid1, uid2):
         uid1, uid2 = sorted([uid1, uid2])
         cls.objects.get_or_create(uid1=uid1, uid2=uid2)
+
+    @classmethod
+    def is_friends(cls, uid1, uid2):
+        uid1, uid2 = sorted([uid1, uid2])
+        return cls.objects.filter(uid1=uid1, uid2=uid2).exists()
+
+    @classmethod
+    def break_off(cls, uid1, uid2):
+        uid1, uid2 = sorted([uid1, uid2])
+        cls.objects.filter(uid1=uid1, uid2=uid2).delete()
