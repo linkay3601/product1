@@ -3,6 +3,7 @@ import datetime
 from django.db import models
 
 from lib.orm import ModelMixin
+from social.models import Friend
 
 
 class User(models.Model, ModelMixin):
@@ -34,8 +35,13 @@ class User(models.Model, ModelMixin):
         birth_time = datetime.date(self.birth_year, self.birth_month, self.birth_day)
         return (today - birth_time).days // 365
 
+    def friends(self):
+        friend_id_list = Friend.friend_id_list(self.id)
+        return User.objects.filter(id__in=friend_id_list)
+
     def to_dict(self):
         return {
+            'id': self.id,
             'nickname': self.nickname,
             'phonenum': self.phonenum,
             'age': self.age,
