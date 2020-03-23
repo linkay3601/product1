@@ -50,3 +50,8 @@ def show_liked_me(request):
     users = logic.users_liked_me(request.user)
     result = [u.to_dict() for u in users]
     return render_json(result) 
+
+
+def get_friends(request):
+    result = [frd.to_dict() for frd in request.user.friends()]
+    return render_json(result)
