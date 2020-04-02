@@ -19,11 +19,11 @@ class AutoMiddleware(MiddlewareMixin):
         # 用户登录验证
         uid = request.session.get('uid')
         if uid is None:
-            raise errors.LoginRequire.code
+            raise errors.LoginRequire
         try:
             user = User.objects.get(id=uid)
         except User.DoesNotExist:
-            raise errors.UserNotExist.code
+            raise errors.UserNotExist
         else:
             # 将 user 对象添加到 request
             request.user = user

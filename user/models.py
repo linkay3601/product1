@@ -4,6 +4,7 @@ from django.db import models
 
 from lib.orm import ModelMixin
 from social.models import Friend
+from vip.models import Vip
 
 
 class User(models.Model, ModelMixin):
@@ -22,11 +23,19 @@ class User(models.Model, ModelMixin):
     avatar = models.CharField(max_length=256, verbose_name='个人象形')
     location = models.CharField(max_length=32, verbose_name='常居地')
 
+    vip_id = models.IntegerField(default=1, verbose_name='Vip ID')
+
     @property
     def profile(self):
         if not hasattr(self, '_profile'):
             self._profile, __ = Profile.objects.get_or_create(id=self.id)
         return self._profile
+
+    @property
+    def vip(self):
+        if not hasattr(self, '_vip'):
+            self._vip = Vip.objects.get(id=self.vip_id)
+        return self._vip
 
     @property
     def age(self):
