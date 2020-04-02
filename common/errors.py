@@ -23,7 +23,8 @@ def generate_logic_error(name: str, code: int) -> LogicError:
 
 OK = generate_logic_error('OK', 0)
 VCodeError = generate_logic_error('VCodeError', 1000)
-VCodeExist = generate_logic_error('VCodeExist', 1002)
-LoginRequire = generate_logic_error('LoginRequire', 1003)
-UserNotExist = generate_logic_error('UserNotExist', 1004)
-ProfileError = generate_logic_error('ProfileError', 1005)
+VCodeExist = generate_logic_error('VCodeExist', 1001)
+LoginRequire = generate_logic_error('LoginRequire', 1002)
+UserNotExist = generate_logic_error('UserNotExist', 1003)
+ProfileError = generate_logic_error('ProfileError', 1004)
+NotHasPerm = generate_logic_error('NotHasPerm', 1005)
