@@ -1,4 +1,7 @@
+from django.core.cache import cache
+
 from common import errors
+
 from lib.http import render_json
 from lib.sms import send_verify_code
 from lib.sms import check_vcode
@@ -32,7 +35,14 @@ def login(request):
 def show_profile(request):
     '''查看个人资料'''
     user = request.user
-    return render_json(user.profile.to_dict())
+
+    key = f'Profile-{user.id}'
+    result = cache.get(key)
+    if result is None:
+        result = user.profile.to_dict()
+        cache.set(key, result)
+
+    return render_json(result)
 
 
 def modify_profile(request):
@@ -42,6 +52,11 @@ def modify_profile(request):
         profile = form.save(commit=False)
         profile.id = request.user.id
         profile.save()
+        result = profile.to_dict()
+
+        # 添加缓存
+        cache.set(f'Profile-{profile.id}', result)
+
         return render_json(profile.to_dict())
     else:
         raise errors.ProfileError
