@@ -25,7 +25,7 @@ def login(request):
     phonenum = request.POST.get('phonenum')
     vcode = request.POST.get('vcode')
     if check_vcode(phonenum, vcode):
-        user, created = User.objects.get_or_create(phonenum=phonenum)
+        user, created = User.get_or_create(phonenum=phonenum)
         request.session['uid'] = user.id
         return render_json(user.to_dict())
     else:

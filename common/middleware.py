@@ -25,7 +25,7 @@ class AutoMiddleware(MiddlewareMixin):
         if uid is None:
             raise errors.LoginRequire
         try:
-            user = User.objects.get(id=uid)
+            user = User.get(id=uid)
         except User.DoesNotExist:
             raise errors.UserNotExist
         else:

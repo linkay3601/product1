@@ -1,8 +1,7 @@
 from django.db import models
-from lib.orm import ModelMixin
 
 
-class Vip(models.Model, ModelMixin):
+class Vip(models.Model):
     name = models.CharField(max_length=16, unique=True)
     level = models.IntegerField(unique=True)
     price = models.FloatField()
@@ -19,7 +18,7 @@ class Vip(models.Model, ModelMixin):
     def has_perm(self, perm_name):
         '''检查该等级 Vip 是否具有某权限'''
         try:
-            perm = Permission.objects.get(name=perm_name)
+            perm = Permission.get(name=perm_name)
         except Permission.DoesNotExist:
             return False
         else:
@@ -27,7 +26,7 @@ class Vip(models.Model, ModelMixin):
                                                   perm_id=perm.id).exists()
 
 
-class Permission(models.Model, ModelMixin):
+class Permission(models.Model):
     name = models.CharField(max_length=32)
     desc = models.TextField()
 

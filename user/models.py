@@ -2,12 +2,11 @@ import datetime
 
 from django.db import models
 
-from lib.orm import ModelMixin
 from social.models import Friend
 from vip.models import Vip
 
 
-class User(models.Model, ModelMixin):
+class User(models.Model):
     SEX = (
         ('0', '男性'),
         ('1', '女性')
@@ -28,13 +27,13 @@ class User(models.Model, ModelMixin):
     @property
     def profile(self):
         if not hasattr(self, '_profile'):
-            self._profile, __ = Profile.objects.get_or_create(id=self.id)
+            self._profile, __ = Profile.get_or_create(id=self.id)
         return self._profile
 
     @property
     def vip(self):
         if not hasattr(self, '_vip'):
-            self._vip = Vip.objects.get(id=self.vip_id)
+            self._vip = Vip.get(id=self.vip_id)
         return self._vip
 
     @property
@@ -60,7 +59,7 @@ class User(models.Model, ModelMixin):
         }
 
 
-class Profile(models.Model, ModelMixin):
+class Profile(models.Model):
     SEX = (
         ('0', '男性'),
         ('1', '女性')
